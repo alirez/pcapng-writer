@@ -1,0 +1,13 @@
+[package]
+name = "pcapng-writer"
+version = "0.1.0"
+authors = ["alirez"]
+edition = "2018"
+license = "MIT"
+
+[dependencies]
+byteorder = "^1.3.4"
+
+[dev-dependencies]
+pcapng = "^1.0.0"
+nom = "^2.0"
