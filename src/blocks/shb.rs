@@ -63,7 +63,7 @@ impl<'a> SectionHeaderBlock<'a> {
 
     /// Create a new Section Header Block with version set to 1.0 and
     /// Section Length "unspecified"
-    pub fn with_v1_defaults(options: &'a Options) -> Self {
+    pub fn new_with_defaults(options: &'a Options) -> Self {
         Self::new(
             BYTE_ORDER_MAGIC,
             1,
@@ -107,7 +107,7 @@ mod tests {
     #[test]
     fn new_shb() {
         let opts = Options::new();
-        let shb = SectionHeaderBlock::with_v1_defaults(&opts);
+        let shb = SectionHeaderBlock::new_with_defaults(&opts);
         let mut buf = vec![];
         shb.encode::<BigEndian>(&mut buf).unwrap();
         assert_eq!(&buf[..4], &[0xa, 0xd, 0xd, 0xa]);
@@ -121,7 +121,7 @@ mod tests {
     #[test]
     fn round_trip() {
         let opts = Options::new();
-        let shb = SectionHeaderBlock::with_v1_defaults(&opts);
+        let shb = SectionHeaderBlock::new_with_defaults(&opts);
         let mut buf = vec![];
         shb.encode::<LittleEndian>(&mut buf).unwrap();
         if let IResult::Done(_, blocks) = pcapng::block::parse_blocks(&buf[..]) {

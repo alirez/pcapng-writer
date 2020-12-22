@@ -94,7 +94,7 @@ mod tests {
         let mut buf = vec![];
         let mut writer = PcapNgWriter::new(Endianness::Little, &mut buf);
         let mut counts: HashMap<enums::BlockType, u32> = HashMap::new();
-        let shb = SectionHeaderBlock::with_v1_defaults(&opts);
+        let shb = SectionHeaderBlock::new_with_defaults(&opts);
         let p = b"\x00\x11\x22\x33\x44\x01\x00\x11\x22\x33\x44\x02\x08\x00\x45\x00\
                   \x00\x42\x88\x1f\x40\x00\x40\x11\x2f\x30\xc0\xa8\x01\x0a\xc0\xa8\
                   \x01\x01\x8c\xdf\x00\x35\x00\x2e\x83\x9b\xbd\x67\x01\x00\x00\x01\
@@ -152,7 +152,7 @@ mod tests {
         let opts = Options::new();
         use crate::blocks::options::{OptionComment, OptionEndOfOpt, OptionEpbFlags};
         use crate::enums::{PacketDirection, ReceptionType};
-        let shb = SectionHeaderBlock::with_v1_defaults(&opts);
+        let shb = SectionHeaderBlock::new_with_defaults(&opts);
         let p = b"\x00\x11\x22\x33\x44\x01\x00\x11\x22\x33\x44\x02\x08\x00\x45\x00\
                   \x00\x42\x88\x1f\x40\x00\x40\x11\x2f\x30\xc0\xa8\x01\x0a\xc0\xa8\
                   \x01\x01\x8c\xdf\x00\x35\x00\x2e\x83\x9b\xbd\x67\x01\x00\x00\x01\

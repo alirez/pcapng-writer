@@ -54,7 +54,7 @@
 //!
 //! // the actual packet content
 //! let payload = b"\x00\x11\x22\x33\x44\x01\x00\x11\x22\x33\x44\x02\x08\x00";
-//! let epb = EnhancedPacketBlock::from_timestamp(
+//! let epb = EnhancedPacketBlock::new_with_timestamp(
 //!     0,
 //!     DEFAULT_TSRES,
 //!     nanos,

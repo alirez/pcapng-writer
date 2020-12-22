@@ -21,7 +21,7 @@ fn pcapng_file_from_bytes() {
     let mut opts = Options::new();
     let tsresol = &OptionIfTsResol::new_option(DEFAULT_TSRES);
     opts.add_option(tsresol);
-    let shb = SectionHeaderBlock::with_v1_defaults(&opts);
+    let shb = SectionHeaderBlock::new_with_defaults(&opts);
     let p = b"\x00\x11\x22\x33\x44\x01\x00\x11\x22\x33\x44\x02\x08\x00\x45\x00\
               \x00\x42\x88\x1f\x40\x00\x40\x11\x2f\x30\xc0\xa8\x01\x0a\xc0\xa8\
               \x01\x01\x8c\xdf\x00\x35\x00\x2e\x83\x9b\xbd\x67\x01\x00\x00\x01\
@@ -54,7 +54,7 @@ fn pcapng_file_from_bytes() {
             .duration_since(UNIX_EPOCH)
             .unwrap()
             .as_nanos();
-        let epb = EnhancedPacketBlock::from_timestamp(
+        let epb = EnhancedPacketBlock::new_with_timestamp(
             0,
             DEFAULT_TSRES,
             nanos,

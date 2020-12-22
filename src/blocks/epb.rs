@@ -78,7 +78,7 @@ impl<'a> EnhancedPacketBlock<'a> {
     /// Create a new `EnhancedPacketBlock`. Uses a
     /// `TimestampResolution` and number of nanoseconds to populate
     /// the timestamp fields.
-    pub fn from_timestamp(
+    pub fn new_with_timestamp(
         interface_id: u32,
         ts_res: &TimestampResolution,
         nanoseconds: u128,
