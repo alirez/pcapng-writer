@@ -45,20 +45,34 @@ trait Block {
     }
 }
 
+/// A raw pcapng block.
 #[derive(Debug)]
 pub struct RawBlock<'a> {
     block_type: u32,
-    total_length: u32,
+    total_length1: u32,
+    total_length2: u32,
     body: &'a [u8],
 }
 
+impl<'a> RawBlock<'a> {
+    pub fn new(block_type: u32, total_length1: u32, total_length2: u32, body: &'a [u8]) -> Self {
+        Self {
+            block_type,
+            total_length1,
+            total_length2,
+            body,
+        }
+    }
+}
+
 impl<'a, W: Write> Encodable<W> for RawBlock<'a> {
+    /// For raw blocks, the total length fields are not automatically
+    /// calculated.
     fn encode<B: ByteOrder>(&self, w: &mut W) -> io::Result<()> {
-        let total_length = self.body.len() as u32;
         w.write_u32::<B>(self.block_type)?;
-        w.write_u32::<B>(total_length)?;
+        w.write_u32::<B>(self.total_length1)?;
         w.write_all(self.body)?;
-        w.write_u32::<B>(total_length)?;
+        w.write_u32::<B>(self.total_length2)?;
         Ok(())
     }
 }
@@ -75,3 +89,51 @@ pub use crate::blocks::idb::InterfaceDescriptionBlock;
 pub use crate::blocks::isb::InterfaceStatisticsBlock;
 pub use crate::blocks::shb::SectionHeaderBlock;
 pub use crate::blocks::spb::SimplePacketBlock;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::blocks::options::*;
+    use crate::blocks::EnhancedPacketBlock;
+    use byteorder::{BigEndian, LittleEndian};
+
+    #[test]
+    fn new_raw_be() {
+        let opts = Options::new();
+        let epb = EnhancedPacketBlock::new(1, 1, 2, 10, 20, &[9; 10], &opts);
+        let mut epb_buf = vec![];
+        epb.encode::<BigEndian>(&mut epb_buf).unwrap();
+        let raw = RawBlock::new(
+            6,
+            44,
+            44,
+            &[
+                0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 10, 0, 0, 0, 20, 9, 9, 9, 9, 9, 9, 9,
+                9, 9, 9, 0, 0,
+            ],
+        );
+        let mut raw_buf = vec![];
+        raw.encode::<BigEndian>(&mut raw_buf).unwrap();
+        assert_eq!(epb_buf, raw_buf);
+    }
+
+    #[test]
+    fn new_raw_le() {
+        let opts = Options::new();
+        let epb = EnhancedPacketBlock::new(1, 1, 2, 10, 20, &[9; 10], &opts);
+        let mut epb_buf = vec![];
+        epb.encode::<LittleEndian>(&mut epb_buf).unwrap();
+        let raw = RawBlock::new(
+            6,
+            44,
+            44,
+            &[
+                1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 10, 0, 0, 0, 20, 0, 0, 0, 9, 9, 9, 9, 9, 9, 9,
+                9, 9, 9, 0, 0,
+            ],
+        );
+        let mut raw_buf = vec![];
+        raw.encode::<LittleEndian>(&mut raw_buf).unwrap();
+        assert_eq!(epb_buf, raw_buf);
+    }
+}
