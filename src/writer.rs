@@ -16,7 +16,7 @@ pub trait Encodable<W: Write> {
     fn encode<B: ByteOrder>(&self, w: &mut W) -> io::Result<()>;
 }
 
-/// The `PcapNgwriter` manages serialization of data with the
+/// The `PcapNgWriter` manages serialization of data with the
 /// speicified endiannes.
 #[derive(Debug)]
 pub struct PcapNgWriter<'a, W: Write> {

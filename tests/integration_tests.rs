@@ -18,9 +18,11 @@ fn get_test_dir() -> PathBuf {
 #[test]
 fn pcapng_file_from_bytes() {
     const FILENAME: &str = "test1.pcapng";
+    let eoo = OptionEndOfOpt::new_option();
     let mut opts = Options::new();
     let tsresol = &OptionIfTsResol::new_option(DEFAULT_TSRES);
     opts.add_option(tsresol);
+    opts.add_option(&eoo);
     let shb = SectionHeaderBlock::new_with_defaults(&opts);
     let p = b"\x00\x11\x22\x33\x44\x01\x00\x11\x22\x33\x44\x02\x08\x00\x45\x00\
               \x00\x42\x88\x1f\x40\x00\x40\x11\x2f\x30\xc0\xa8\x01\x0a\xc0\xa8\
@@ -29,7 +31,6 @@ fn pcapng_file_from_bytes() {
               \x62\x69\x6e\x61\x74\x6f\x72\x03\x63\x6f\x6d\x00\x00\x01\x00\x01";
 
     let comment_opt = OptionComment::new_option("Test Comment");
-    let eoo = OptionEndOfOpt::new_option();
     let flags_opt = OptionEpbFlags::new_option(
         PacketDirection::Inbound,
         ReceptionType::Promiscuous,
@@ -66,6 +67,6 @@ fn pcapng_file_from_bytes() {
         writer.write(&epb).unwrap();
     }
     assert!(path.exists());
-    assert_eq!(metadata(&path).unwrap().len(), 14064);
+    assert_eq!(metadata(&path).unwrap().len(), 14072);
     remove_file(&path).unwrap();
 }

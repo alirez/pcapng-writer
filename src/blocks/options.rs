@@ -1,6 +1,9 @@
-use crate::enums::{PacketDirection, ReceptionType};
 use crate::utils::TimestampResolution;
 use crate::writer::Encodable;
+use crate::{
+    enums::{PacketDirection, ReceptionType},
+    utils::pad_to_32,
+};
 use byteorder::{ByteOrder, WriteBytesExt};
 use std::convert::TryInto;
 use std::io;
@@ -117,10 +120,7 @@ impl BlockOption {
     }
 
     fn padding(&self) -> Vec<u8> {
-        let mut n = (self.length() % 4).try_into().unwrap();
-        if n > 0 {
-            n = 4 - n;
-        }
+        let n = pad_to_32(self.length().into());
         vec![0u8; n]
     }
 }

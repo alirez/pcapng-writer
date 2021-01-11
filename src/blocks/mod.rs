@@ -1,9 +1,8 @@
-use crate::enums::BlockType;
 use crate::writer::Encodable;
+use crate::{enums::BlockType, utils::pad_to_32};
 use byteorder::{ByteOrder, WriteBytesExt};
-use std::convert::TryInto;
-use std::io;
 use std::io::Write;
+use std::{convert::TryInto, io};
 
 /*
     Based on the draft standard:
@@ -37,10 +36,7 @@ trait Block {
     fn length(&self) -> u32;
 
     fn padding(&self) -> Vec<u8> {
-        let mut n = (self.length() % 4).try_into().unwrap();
-        if n > 0 {
-            n = 4 - n;
-        }
+        let n = pad_to_32(self.length().try_into().unwrap());
         vec![0u8; n]
     }
 }

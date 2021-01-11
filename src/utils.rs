@@ -41,6 +41,14 @@ impl TimestampResolution {
     }
 }
 
+pub fn pad_to_32(n: usize) -> usize {
+    let mut m = n % 4;
+    if m > 0 {
+        m = 4 - m;
+    }
+    m
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -90,5 +98,14 @@ mod tests {
             (((high as u64) << 32) | (low as u64)) / (2u64).pow(14),
             (nanos / 1_000_000_000) as u64
         );
+    }
+
+    #[test]
+    fn padding() {
+        assert_eq!(pad_to_32(0), 0);
+        assert_eq!(pad_to_32(1), 3);
+        assert_eq!(pad_to_32(2), 2);
+        assert_eq!(pad_to_32(3), 1);
+        assert_eq!(pad_to_32(4), 0);
     }
 }

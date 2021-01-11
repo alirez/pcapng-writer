@@ -2,7 +2,7 @@ use crate::blocks::options::Options;
 use crate::blocks::Block;
 use crate::constants::*;
 use crate::enums::*;
-use crate::utils::TimestampResolution;
+use crate::utils::{pad_to_32, TimestampResolution};
 use crate::writer::Encodable;
 use byteorder::{ByteOrder, WriteBytesExt};
 use std::io;
@@ -100,7 +100,7 @@ impl<'a> EnhancedPacketBlock<'a> {
     }
 
     fn data_padding(&self) -> Vec<u8> {
-        let n = self.packet_data.len() % 4;
+        let n = pad_to_32(self.packet_data.len());
         vec![0u8; n]
     }
 }
