@@ -19,24 +19,24 @@ pub trait Encodable<W: Write> {
 /// The `PcapNgWriter` manages serialization of data with the
 /// speicified endiannes.
 #[derive(Debug)]
-pub struct PcapNgWriter<'a, W: Write> {
+pub struct PcapNgWriter<W: Write> {
     endianness: Endianness,
-    writer: &'a mut W,
+    writer: W,
 }
 
-impl<'a, W: Write> PcapNgWriter<'a, W> {
+impl<W: Write> PcapNgWriter<W> {
     /// Creates a new pcapng writer.
-    pub fn new(endianness: Endianness, writer: &'a mut W) -> Self {
+    pub fn new(endianness: Endianness, writer: W) -> Self {
         Self { endianness, writer }
     }
 
     /// Creates a new little-endian pcapng writer.
-    pub fn new_le(writer: &'a mut W) -> Self {
+    pub fn new_le(writer: W) -> Self {
         Self::new(Endianness::Little, writer)
     }
 
     /// Creates a new big-endian pcapng writer.
-    pub fn new_be(writer: &'a mut W) -> Self {
+    pub fn new_be(writer: W) -> Self {
         Self::new(Endianness::Big, writer)
     }
 
