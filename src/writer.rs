@@ -53,7 +53,7 @@ impl<W: Write> PcapNgWriter<W> {
         &self.writer
     }
 
-    /// Returns mutable reference to the underlying writer.
+    /// Returns a mutable reference to the underlying writer.
     pub fn get_writer_mut(&mut self) -> &mut W {
         &mut self.writer
     }
