@@ -4,6 +4,10 @@ An implementation of the pcapng capture file format encoding.
 
 This library is based on the draft standard version 02 ([draft-tuexen-opsawg-pcapng-02](https://tools.ietf.org/html/draft-tuexen-opsawg-pcapng-02)).
 
+# Example
+
+For an example of how to use the library, see [the integration test](tests/integration_tests.rs).
+
 # Supported block types
 
 | Block Type                       | Supported? |
