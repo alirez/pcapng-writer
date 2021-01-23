@@ -1,6 +1,8 @@
 [package]
 name = "pcapng-writer"
 version = "0.1.0"
+description = "An implementation of the pcapng capture file format encoding"
+repository = "https://github.com/alirez/pcapng-writer"
 authors = ["alirez"]
 edition = "2018"
 license = "MIT"
