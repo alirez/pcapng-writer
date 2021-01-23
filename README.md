@@ -1,3 +1,5 @@
+[![Tests](https://github.com/alirez/pcapng-writer/workflows/ci/badge.svg)](https://github.com/alirez/pcapng-writer/actions)
+
 # pcapng-writer
 
 An implementation of the pcapng capture file format encoding.
